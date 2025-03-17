@@ -2,7 +2,7 @@ import { User } from "src/users/entities/user.entity";
 import { Question } from "src/questions/entities/question.entity";
 import { Entity , Column , CreateDateColumn , UpdateDateColumn , JoinColumn,ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity()
+@Entity('options')
 export class Option_quize{
 
     @PrimaryGeneratedColumn()

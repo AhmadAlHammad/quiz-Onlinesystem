@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Response } from './entities/response.entity';
 import { CreateResponseDto } from './dto/create-response.dto';
+import { UpdateResponseDto } from './dto/update-response.dto';
 
 @Injectable()
 export class ResponsesService {
@@ -24,7 +25,7 @@ export class ResponsesService {
     return this.responseRepository.findOne({where:{id}});
   }
 
-  async update(id: string, updateResponseDto: CreateResponseDto): Promise<Response | null > {
+  async update(id: string, updateResponseDto: UpdateResponseDto): Promise<Response | null > {
     await this.responseRepository.update(id, updateResponseDto);
     return this.responseRepository.findOne({where:{id}});
   }

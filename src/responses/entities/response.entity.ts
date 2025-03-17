@@ -3,7 +3,7 @@ import { Question } from "src/questions/entities/question.entity";
 import { Quiz } from "src/quizzes/entities/quiz.entity";
 import { Option_quize } from "src/options/entities/option.entity";
 
-import { Entity , Column , PrimaryColumn , CreateDateColumn , UpdateDateColumn , ManyToOne , JoinColumn, PrimaryGeneratedColumn } from "typeorm";
+import { Entity , CreateDateColumn , UpdateDateColumn , ManyToOne , JoinColumn, PrimaryGeneratedColumn } from "typeorm";
 @Entity ('responses')
 export class Response {
 

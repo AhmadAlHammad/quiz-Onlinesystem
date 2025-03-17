@@ -12,10 +12,11 @@ export class QuestionsService {
     private readonly questionRepository: Repository<Question>,
   ) {}
 
-  async create(createQuestionDto: CreateQuestionDto): Promise<Question> {
-    const question = this.questionRepository.create(createQuestionDto);
-    return this.questionRepository.save(question);
-  }
+    async create(CreateQuestionDto: CreateQuestionDto , user:any): Promise<Question > {
+      const optionQuiz = this.questionRepository.create({...CreateQuestionDto , createdBy : user.userId});
+      return this.questionRepository.save(optionQuiz);
+    }
+  
 
  async findAll():Promise<Question[]> {
     return this.questionRepository.find();
@@ -25,11 +26,10 @@ export class QuestionsService {
     return this.questionRepository.findOne({where:{id}});
   }
 
-  async update(id: number, updateQuestionDto: UpdateQuestionDto) {
-await this.questionRepository.update(id,updateQuestionDto);
-return this.questionRepository.findOne({where:{id}});
+ async update(id: number, UpdateQuestionDto: UpdateQuestionDto , user:any): Promise<Question | null> {
+    await this.questionRepository.update(id, {...UpdateQuestionDto , updatedBy:user.userId});
+    return this.questionRepository.findOne({where:{id}});
   }
-
   async remove(id: number) {
     await this.questionRepository.delete(id);
   }

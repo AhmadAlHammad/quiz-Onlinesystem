@@ -11,8 +11,8 @@ export class OptionQuizService {
     private readonly optionQuizRepository: Repository<Option_quize>,
   ) {}
 
-  async create(createOptionQuizDto: CreateOptionQuizDto): Promise<Option_quize> {
-    const optionQuiz = this.optionQuizRepository.create(createOptionQuizDto);
+  async create(createOptionQuizDto: CreateOptionQuizDto , user:any): Promise<Option_quize> {
+    const optionQuiz = this.optionQuizRepository.create({...createOptionQuizDto , createdBy : user.userId});
     return this.optionQuizRepository.save(optionQuiz);
   }
 
@@ -24,8 +24,8 @@ export class OptionQuizService {
     return this.optionQuizRepository.findOne({where:{id}});
   }
 
-  async update(id: number, updateOptionQuizDto: CreateOptionQuizDto): Promise<Option_quize | null> {
-    await this.optionQuizRepository.update(id, updateOptionQuizDto);
+  async update(id: number, updateOptionQuizDto: CreateOptionQuizDto , user:any): Promise<Option_quize | null> {
+    await this.optionQuizRepository.update(id, {...updateOptionQuizDto , updatedBy:user.userId});
     return this.optionQuizRepository.findOne({where:{id}});
   }
 

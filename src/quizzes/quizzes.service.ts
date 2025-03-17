@@ -3,8 +3,8 @@ import { CreateQuizDto } from './dto/create-quiz.dto';
 import { UpdateQuizDto } from './dto/update-quiz.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Quiz } from './entities/quiz.entity';
-import { IsNull, Repository } from 'typeorm';
-import { User } from 'src/users/entities/user.entity';
+import {  Repository } from 'typeorm';
+
 
 @Injectable()
 export class QuizzesService {
@@ -36,8 +36,8 @@ export class QuizzesService {
     return this.quizRepository.findOne({where:{id}});
   }
 
-  async update(id: string, updateQuizDto: UpdateQuizDto):Promise<Quiz | null> {
-    await this.quizRepository.update(id,updateQuizDto);
+  async update(id: string, updateQuizDto: UpdateQuizDto,user:any):Promise<Quiz | null> {
+    await this.quizRepository.update(id,{...updateQuizDto,updated_by: user.userId});
     return this.quizRepository.findOne({where:{id}});
   }
 

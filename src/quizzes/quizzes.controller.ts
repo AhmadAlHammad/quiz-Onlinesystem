@@ -16,12 +16,12 @@ export class QuizzesController {
     const user = req.user;
     return this.quizzesService.create(createQuizDto,user);
   }
-
+  @UseGuards(JwtAuthGuard)
   @Get()
   findAll() {
     return this.quizzesService.findAll();
   }
-
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.quizzesService.findOne(id);
@@ -29,8 +29,9 @@ export class QuizzesController {
 @UseGuards(JwtAuthGuard,RolesGuard)
 @Roles('admin')
   @Put(':id')
-  update(@Param('id') id: string, @Body() updateQuizDto: UpdateQuizDto) {
-    return this.quizzesService.update(id, updateQuizDto);
+  update(@Param('id') id: string, @Body() updateQuizDto: UpdateQuizDto , @Request() req) {
+    const user = req.user;
+    return this.quizzesService.update(id, updateQuizDto,user);
   }
   @UseGuards(JwtAuthGuard,RolesGuard)
   @Roles('admin')

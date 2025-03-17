@@ -6,9 +6,14 @@ import { User } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class AuthService {
+  findOneById(userId: any) {
+      throw new Error('Method not implemented.');
+  }
 
-  constructor(private usersService: UsersService, private jwtService: JwtService) {}
-
+  constructor(
+    private readonly usersService: UsersService, 
+    private readonly jwtService: JwtService,      
+  ) {}
   async validateUser(username: string, password: string): Promise<User | null> {
     const user = await this.usersService.findOne(username);
     if (!user) {
@@ -23,8 +28,8 @@ export class AuthService {
     return user;  
   }
 
-  async signIn(user: User) {
-    const payload = { username: user.username, userId: user.id };
+  async signIn(user: User) {    
+    const payload = { username: user.username, userId: user.id,role:user.role};
     const token = this.jwtService.sign(payload, { secret: 'ahmad' });
     return { message: 'Successfully signed in', token, payload };
   }

@@ -4,6 +4,7 @@ import { UpdateQuizDto } from './dto/update-quiz.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Quiz } from './entities/quiz.entity';
 import { IsNull, Repository } from 'typeorm';
+import { User } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class QuizzesService {
@@ -13,11 +14,16 @@ export class QuizzesService {
     private readonly quizRepository: Repository<Quiz>,
   ) {}
   
-  async create(createQuizDto: CreateQuizDto):Promise<Quiz> {
-    const quize = this.quizRepository.create(createQuizDto);
-return this.quizRepository.save(quize);    
+  
+  async create(createQuizDto: CreateQuizDto, user: any): Promise<Quiz> {
+    
+    const quiz = this.quizRepository.create({
+      ...createQuizDto,
+      createdBy: user.userId, 
+    });
+  
+    return this.quizRepository.save(quiz);
   }
-
   async findAll():Promise<Quiz[]> {
  return this.quizRepository.find();
   }

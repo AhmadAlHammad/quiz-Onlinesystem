@@ -1,7 +1,7 @@
 import { Entity, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn, PrimaryGeneratedColumn } from 'typeorm';
 import { User } from 'src/users/entities/user.entity';
 
-@Entity()
+@Entity('quizzes')
 export class Quiz {
   @PrimaryGeneratedColumn('uuid')
   id:string;
@@ -24,5 +24,5 @@ export class Quiz {
 
   @ManyToOne(() => User)
   @JoinColumn({ name: 'updated_by' })
-  updatedBy: User;
+  updated_by: User;
 }

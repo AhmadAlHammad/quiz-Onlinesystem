@@ -8,6 +8,9 @@ import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UsersService {
+    findOneById(userId: any) {
+        throw new Error('Method not implemented.');
+    }
   constructor(
     @InjectRepository(User) 
     private readonly usersRepository: Repository<User>,

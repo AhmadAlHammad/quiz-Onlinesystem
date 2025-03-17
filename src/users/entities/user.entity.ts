@@ -1,5 +1,5 @@
 import { Entity,Column,CreateDateColumn,UpdateDateColumn,ManyToOne,JoinColumn, PrimaryGeneratedColumn } from "typeorm";
-export type Roles = 'student' | 'admin';
+export type role = 'student' | 'admin';
 
 @Entity('users')
 export class User {
@@ -16,7 +16,7 @@ email : string;
 password : string;
 
 @Column({type : 'enum' , enum :['student', 'admin']  , default : 'student'})
-role : Roles
+role : role
 
 @CreateDateColumn({type : 'timestamp'})
 created_at : Date;

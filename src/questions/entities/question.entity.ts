@@ -4,14 +4,15 @@ import { User } from "src/users/entities/user.entity";
 
 @Entity('questions')
 export class Question {
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn('uuid')
     id: number;
+    
 
-@ManyToOne(() => Quiz)
-@JoinColumn({ name: 'quiz_id' })
-quiz: Quiz;
+    @ManyToOne(() => Quiz, { eager: true })
+    @JoinColumn({ name: 'quiz_id' })
+    quiz: Quiz;
 
-@Column('text')
+@Column('text',{default:'plese fell of the quastion '})
 question_text: string;
 
 @Column({ type: 'enum', enum: ['multiple_choice', 'true_false'] })

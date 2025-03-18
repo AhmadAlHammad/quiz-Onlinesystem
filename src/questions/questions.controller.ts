@@ -9,12 +9,12 @@ import { Roles } from 'src/common/decorators/roles.decorator';
 @Controller('questions')
 export class QuestionsController {
   constructor(private readonly questionsService: QuestionsService) {}
-@UseGuards(JwtAuthGuard,RolesGuard)
-@Roles('admin')
-  @Post()
-  create(@Body() createQuestionDto: CreateQuestionDto , @Request() req) {
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
+  @Post(':quizId')  
+  create(@Body() createQuestionDto: CreateQuestionDto, @Request() req, @Param('quizId') quizId: string) {
     const user = req.user;
-    return this.questionsService.create(createQuestionDto,user);
+    return this.questionsService.create(createQuestionDto, user, quizId);
   }
   @UseGuards(JwtAuthGuard)
   @Get()

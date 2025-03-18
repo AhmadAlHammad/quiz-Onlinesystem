@@ -12,9 +12,16 @@ export class QuestionsService {
     private readonly questionRepository: Repository<Question>,
   ) {}
 
-    async create(CreateQuestionDto: CreateQuestionDto , user:any): Promise<Question > {
-      const optionQuiz = this.questionRepository.create({...CreateQuestionDto , createdBy : user.userId});
-      return this.questionRepository.save(optionQuiz);
+    async create(CreateQuestionDto: CreateQuestionDto , user:any,quizId:string): Promise<Question | any > {
+      console.log("Received quizId:", quizId);
+      const optionQuiz = this.questionRepository.create({...CreateQuestionDto , createdBy : user.userId,quiz: { id: quizId }});
+
+      
+      const savedQuestion = await this.questionRepository.save(optionQuiz);
+
+
+      return this.questionRepository.createQueryBuilder('question').leftJoinAndSelect('question.quiz','quiz').where('question.id = :id', { id: savedQuestion.id }).getOne();
+
     }
   
 

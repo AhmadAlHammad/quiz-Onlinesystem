@@ -1,30 +1,19 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { ScoresService } from './scores.service';
 import { CreateScoreDto } from './dto/create-score.dto';
-import { UpdateScoreDto } from './dto/update-score.dto';
 
 @Controller('scores')
 export class ScoresController {
   constructor(private readonly scoresService: ScoresService) {}
 
-  @Post()
-  create(@Body() createScoreDto: CreateScoreDto) {
-    return this.scoresService.create(createScoreDto);
+  @Post(':user_id')
+  async create(@Param('user_id') user_id: string,@Body()  quiz_id,score,createscoreDto:CreateScoreDto){
+    return this.scoresService.createScore(createscoreDto,quiz_id,user_id,score);
   }
 
   @Get()
   findAll() {
     return this.scoresService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.scoresService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateScoreDto: UpdateScoreDto) {
-    return this.scoresService.update(+id, updateScoreDto);
   }
 
   @Delete(':id')

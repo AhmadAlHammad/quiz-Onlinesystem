@@ -11,24 +11,56 @@ export class ScoresService {
     private readonly scoreRepository: Repository<Score>,
   ) {}
 
-  async create(createScoreDto: CreateScoreDto): Promise<Score> {
-    const score = this.scoreRepository.create(createScoreDto);
-    return this.scoreRepository.save(score);
+  async createScore(
+    createScoreDto: CreateScoreDto,
+    user: any,  
+    quizId: string,
+    scoreValue: number
+  ): Promise<Score | null > {
+    console.log("Received quizId:", quizId);
+
+    const score = this.scoreRepository.create({
+      ...createScoreDto,
+      user: { id: user.userId }, 
+      quiz: { id: quizId },
+      score: scoreValue,  
+      createdBy: user.userId,  
+      updatedBy: user.userId   
+    });
+
+    const savedScore = await this.scoreRepository.save(score);
+
+    return this.scoreRepository
+      .createQueryBuilder('score')
+      .leftJoinAndSelect('score.quiz', 'quiz')
+      .leftJoinAndSelect('score.user', 'user')
+      .leftJoinAndSelect('score.createdBy', 'createdBy')
+      .leftJoinAndSelect('score.updatedBy', 'updatedBy')
+      .where('score.id = :id', { id: savedScore.id })
+      .getOne();
   }
+
+  async deleteScore(id: string): Promise<void> {
+    await this.scoreRepository.delete(id);
+  }
+
+  async findScoreById(id: string): Promise<Score | null> {
+    return this.scoreRepository
+      .createQueryBuilder('score')
+      .leftJoinAndSelect('score.quiz', 'quiz')
+      .leftJoinAndSelect('score.user', 'user')
+      .leftJoinAndSelect('score.createdBy', 'createdBy')
+      .leftJoinAndSelect('score.updatedBy', 'updatedBy')
+      .where('score.id = :id', { id })
+      .getOne();
+  }
+
 
   async findAll(): Promise<Score[]> {
     return this.scoreRepository.find();
   }
 
-  async findOne(id: number): Promise<Score | null> {
-    return this.scoreRepository.findOne({where:{id}});
-  }
-
-  async update(id: number, updateScoreDto: CreateScoreDto): Promise<Score | null> {
-    await this.scoreRepository.update(id, updateScoreDto);
-    return this.scoreRepository.findOne({where:{id}});
-  }
-
+  
   async remove(id: number): Promise<void> {
     await this.scoreRepository.delete(id);
   }

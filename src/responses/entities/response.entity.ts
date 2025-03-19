@@ -7,7 +7,7 @@ import { Entity , CreateDateColumn , UpdateDateColumn , ManyToOne , JoinColumn, 
 @Entity ('responses')
 export class Response {
 
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn('uuid')
     id : string;
 
     @ManyToOne(()=>User)
@@ -28,5 +28,16 @@ export class Response {
 
     @CreateDateColumn({type : 'timestamp'})
     created_at : Date;
+
+    @ManyToOne(() => User)
+    @JoinColumn({ name: 'updated_by' })
+    updatedBy: User;
+
+    @ManyToOne(() => User)
+    @JoinColumn({ name: 'created_by' })
+    createdBy: User;
+
+    @UpdateDateColumn({ type: 'timestamp' })
+    updated_at: Date;
 
 }

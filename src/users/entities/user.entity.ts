@@ -32,4 +32,5 @@ updated_at : Date;
 @JoinColumn({name : 'updated_by'})
 updatedBy : User;
     static password: string;
+    responses: any;
 }

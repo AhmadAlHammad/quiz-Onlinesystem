@@ -1,14 +1,19 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { CreateOptionQuizDto } from './create-option-quiz';
 import { IsBoolean, IsNotEmpty, IsString, IsUUID } from 'class-validator';
+import { Question } from 'src/questions/entities/question.entity';
+import { JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 export class UpdateOptionDto extends PartialType(CreateOptionQuizDto) {
     
-  
-    @IsUUID()
-    @IsNotEmpty()
-    question_id: string;
-  
+     @PrimaryGeneratedColumn('uuid')
+     id : string
+     
+     @IsUUID()
+     @IsNotEmpty()
+     questionId: string;
+
+
     @IsString()
     @IsNotEmpty()
     option_text: string;

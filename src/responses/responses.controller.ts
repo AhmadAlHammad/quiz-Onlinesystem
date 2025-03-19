@@ -1,34 +1,30 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/common';
+import { Controller, Get,Param, Delete, UseGuards, Body, Post,  } from '@nestjs/common';
 import { ResponsesService } from './responses.service';
-import { CreateResponseDto } from './dto/create-response.dto';
-import { UpdateResponseDto } from './dto/update-response.dto';
+import { JwtAuthGuard } from 'src/auth/auth/jwt-auth.guard';
+import { CreateResponseDto } from 'src/responses/dto/create-response.dto';
+
+
 
 @Controller('responses')
 export class ResponsesController {
   constructor(private readonly responsesService: ResponsesService) {}
 
-  @Post()
-  create(@Body() createResponseDto: CreateResponseDto) {
-    return this.responsesService.create(createResponseDto);
+  @Post(':user_id')
+  async createResponse(@Param('user_id') user_id: string, @Body()  quiz_id, question_id, selected_option_id, createResponseDto : CreateResponseDto, ) {
+    return this.responsesService.createResponse(
+      createResponseDto,
+      user_id,
+      quiz_id,
+      question_id,
+      selected_option_id,
+    );
   }
 
-  @Get()
-  findAll() {
-    return this.responsesService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.responsesService.findOne(id);
-  }
-
-  @Put(':id')
-  update(@Param('id') id: string, @Body() updateResponseDto: UpdateResponseDto) {
-    return this.responsesService.update(id, updateResponseDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.responsesService.remove(id);
+  @Delete(':user_id/:id')
+  async deleteResponse(
+    @Param('user_id') user_id: string,
+    @Param('id') id: string,
+  ): Promise<void> {
+    return this.responsesService.deleteResponse(id);
   }
 }

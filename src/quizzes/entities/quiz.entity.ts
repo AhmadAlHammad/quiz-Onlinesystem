@@ -25,4 +25,5 @@ export class Quiz {
   @ManyToOne(() => User)
   @JoinColumn({ name: 'updated_by' })
   updated_by: User;
+  
 }

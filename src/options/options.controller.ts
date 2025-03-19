@@ -11,10 +11,10 @@ export class OptionsController {
   constructor(private readonly optionsService: OptionQuizService) {}
  @UseGuards(JwtAuthGuard,RolesGuard)
   @Roles('admin')
-  @Post()
-  create(@Body() createOptionDto: CreateOptionQuizDto,@Request() req) {
+  @Post(':questionId')
+  create(@Body() createOptionDto: CreateOptionQuizDto,@Request() req, @Param('questionId') questionId:string) {
     const user = req.user;
-    return this.optionsService.create(createOptionDto,user);
+    return this.optionsService.create(createOptionDto,user,questionId);
   }
   @UseGuards(JwtAuthGuard,RolesGuard)
   @Roles('admin')
@@ -25,12 +25,12 @@ export class OptionsController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.optionsService.findOne(+id);
+    return this.optionsService.findOne(id);
   }
   @UseGuards(JwtAuthGuard,RolesGuard)
   @Roles('admin')
   @Put(':id')
-  update(@Param('id') id: number, @Body() UpdateOptionDto: UpdateOptionDto , @Request() req) {
+  update(@Param('id') id: string, @Body() UpdateOptionDto: UpdateOptionDto , @Request() req) {
      const user = req.user;
      return this.optionsService.update(id, UpdateOptionDto,user);
   }

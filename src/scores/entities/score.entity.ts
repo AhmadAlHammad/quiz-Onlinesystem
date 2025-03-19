@@ -1,6 +1,5 @@
 import { Entity , Column , PrimaryColumn , ManyToOne , JoinColumn , UpdateDateColumn,CreateDateColumn, PrimaryGeneratedColumn } from "typeorm";
 import { User } from "src/users/entities/user.entity";
-import { Quiz } from "src/quizzes/entities/quiz.entity";
 
 @Entity('scores')
 export class Score {

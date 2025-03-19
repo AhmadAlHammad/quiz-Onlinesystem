@@ -15,14 +15,17 @@ export class QuizzesService {
   ) {}
   
   
-  async create(createQuizDto: CreateQuizDto, user: any): Promise<Quiz> {
+  async create(createQuizDto: CreateQuizDto, user: any): Promise<Quiz | null > {
     
     const quiz = this.quizRepository.create({
       ...createQuizDto,
       createdBy: user.userId, 
+
     });
   
-    return this.quizRepository.save(quiz);
+    const savedquize= await this.quizRepository.save(quiz);
+
+    return this.quizRepository.createQueryBuilder('quizzes').leftJoinAndSelect('quizzes.createdBy','createdBy').leftJoinAndSelect('quizzes.updated_by', 'updated_by').where('quizzes.id = :id', { id: savedquize.id }).getOne();
   }
   async findAll():Promise<Quiz[]> {
  return this.quizRepository.find();

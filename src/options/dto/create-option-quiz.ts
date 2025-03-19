@@ -1,11 +1,14 @@
 import { IsBoolean, IsNotEmpty, IsString, IsUUID } from "class-validator";
+import { Question } from "src/questions/entities/question.entity";
+import { JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 export class CreateOptionQuizDto { 
+   @PrimaryGeneratedColumn('uuid')
    
-  
-    @IsUUID()
-    @IsNotEmpty()
-    question_id: string;
+   id : string
+   @IsString()
+   @IsNotEmpty()
+   questionId: string;
   
     @IsString()
     @IsNotEmpty()

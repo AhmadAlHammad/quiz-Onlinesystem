@@ -14,13 +14,13 @@ export class QuestionsService {
 
     async create(CreateQuestionDto: CreateQuestionDto , user:any,quizId:string): Promise<Question | any > {
       console.log("Received quizId:", quizId);
-      const optionQuiz = this.questionRepository.create({...CreateQuestionDto , createdBy : user.userId,quiz: { id: quizId }});
+      const optionQuiz = this.questionRepository.create({...CreateQuestionDto , createdBy : user.userId,updatedBy : user.userId,quiz: { id: quizId }});
 
       
       const savedQuestion = await this.questionRepository.save(optionQuiz);
 
 
-      return this.questionRepository.createQueryBuilder('question').leftJoinAndSelect('question.quiz','quiz').where('question.id = :id', { id: savedQuestion.id }).getOne();
+      return this.questionRepository.createQueryBuilder('question').leftJoinAndSelect('question.quiz','quiz').leftJoinAndSelect('question.createdBy', 'createdBy').leftJoinAndSelect('question.updatedBy', 'updatedBy').where('question.id = :id', { id: savedQuestion.id }).getOne();
 
     }
   
@@ -29,15 +29,15 @@ export class QuestionsService {
     return this.questionRepository.find();
   }
 
-  async findOne(id: number):Promise<Question | null>{
+  async findOne(id: string):Promise<Question | null>{
     return this.questionRepository.findOne({where:{id}});
   }
 
- async update(id: number, UpdateQuestionDto: UpdateQuestionDto , user:any): Promise<Question | null> {
+ async update(id: string, UpdateQuestionDto: UpdateQuestionDto , user:any): Promise<Question | null> {
     await this.questionRepository.update(id, {...UpdateQuestionDto , updatedBy:user.userId});
     return this.questionRepository.findOne({where:{id}});
   }
-  async remove(id: number) {
+  async remove(id: string) {
     await this.questionRepository.delete(id);
   }
 }

@@ -9,34 +9,40 @@ import { Roles } from 'src/common/decorators/roles.decorator';
 @Controller('questions')
 export class QuestionsController {
   constructor(private readonly questionsService: QuestionsService) {}
+
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('admin')
   @Post(':quizId')  
   create(@Body() createQuestionDto: CreateQuestionDto, @Request() req, @Param('quizId') quizId: string) {
     const user = req.user;
-    return this.questionsService.create(createQuestionDto, user, quizId);
+    console.log('Received quizId:', quizId); 
+    return this.questionsService.create(createQuestionDto, user, quizId); 
   }
+
   @UseGuards(JwtAuthGuard)
   @Get()
   findAll() {
     return this.questionsService.findAll();
   }
+
   @UseGuards(JwtAuthGuard)
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.questionsService.findOne(+id);
+    return this.questionsService.findOne(id);
   }
-  @UseGuards(JwtAuthGuard,RolesGuard)
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('admin')
   @Put(':id')
-  update(@Param('id') id: string, @Body() updateQuestionDto: UpdateQuestionDto , @Request() req) {
+  update(@Param('id') id: string, @Body() updateQuestionDto: UpdateQuestionDto, @Request() req) {
     const user = req.user;
-    return this.questionsService.update(+id, updateQuestionDto,user);
+    return this.questionsService.update(id, updateQuestionDto, user);
   }
-  @UseGuards(JwtAuthGuard,RolesGuard)
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('admin')
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.questionsService.remove(+id);
+    return this.questionsService.remove(id); 
   }
 }
